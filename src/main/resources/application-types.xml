@@ -24,4 +24,13 @@ type united_flights_json = {|
       <types:shape format="java" element="com.mulesoft.training.Flight"/>
     </types:type>
   </types:catalog>
+  <types:enrichment select="#de02ce79-685c-4f15-b928-5cfc4163e533">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
 </types:mule>
