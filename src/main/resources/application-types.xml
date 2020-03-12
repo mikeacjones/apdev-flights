@@ -33,4 +33,18 @@ type united_flights_json = {|
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#6f389ef3-a35a-4082-bff5-d8bd520ca13b">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="united_flights_json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
 </types:mule>
