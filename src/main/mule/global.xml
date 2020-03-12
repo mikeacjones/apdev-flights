@@ -22,5 +22,10 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 	</wsc:config>
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="0308761b-8a05-47c9-ae50-5ba332263327" basePath="${united.basepath}">
 		<http:request-connection host="${united.host}" port="${united.port}" />
-	</http:request-config>	
+	</http:request-config>
+	<error-handler name="globalError_Handler" doc:id="63312590-403d-449d-8a64-74707d40171a" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7a69c417-d8a2-4605-a14f-603d4efebfd7" type="ANY">
+			<logger level="INFO" doc:name="DEFAULT HANDLER EXECUTED" doc:id="d96950de-5418-4f97-ade7-afbc7b00d016" message="DEFAULT HANDLER EXECUTED"/>
+		</on-error-propagate>
+	</error-handler>	
 </mule>

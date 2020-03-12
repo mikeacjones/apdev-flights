@@ -34,11 +34,6 @@ flatten(payload..payload)]]></ee:set-payload>
 		<http:listener doc:name="GET /flights" doc:id="7ab2170a-21ae-4f73-9906-349fe9be3693" config-ref="mua-flights-api-httpListenerConfig" path="/flights" allowedMethods="GET" >
 			<http:response statusCode="#[vars.httpStatus default 200]" />
 			<http:error-response statusCode="#[vars.httpStatus default 500]" >
-				<http:body ><![CDATA[#[output application/json
----
-{
-	"message": error.description
-}]]]></http:body>
 			</http:error-response>
 		</http:listener>
 		<set-variable value="#[trim(lower(attributes.queryParams.airline))]" doc:name="airline" doc:id="c2d52078-4c64-414e-837c-26a17da7f377" variableName="airline"/>
