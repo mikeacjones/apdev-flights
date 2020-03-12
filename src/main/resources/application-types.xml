@@ -23,6 +23,12 @@ type united_flights_json = {|
     <types:type name="flight_pojo" format="java">
       <types:shape format="java" element="com.mulesoft.training.Flight"/>
     </types:type>
+    <types:type name="find_find_soap" format="xml">
+      <types:example format="xml" element="{http://soap.training.mulesoft.com/}findFlight" location="examples/findFlightSOAPEnvelopeExample.xml"/>
+    </types:type>
+    <types:type name="find_flight_response" format="xml">
+      <types:example format="xml" element="{http://soap.training.mulesoft.com/}findFlightResponse" location="examples/findFlightResponseExample.xml"/>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#6f389ef3-a35a-4082-bff5-d8bd520ca13b">
     <types:processor-declaration>
@@ -70,6 +76,15 @@ type united_flights_json = {|
       <types:output-event>
         <types:message>
           <types:payload type="flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#66935bc7-0bd9-4a69-bc18-25e8626adb7e">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="find_flight_response"/>
         </types:message>
       </types:output-event>
     </types:processor-declaration>

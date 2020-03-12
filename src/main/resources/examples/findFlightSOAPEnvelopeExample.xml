@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.training.mulesoft.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:findFlight>
+         <!--Optional:-->
+         <destination>?</destination>
+      </soap:findFlight>
+   </soapenv:Body>
+</soapenv:Envelope>

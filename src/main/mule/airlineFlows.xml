@@ -81,7 +81,7 @@ payload.flights map ( flight , indexOfFlight ) -> {
 	<flow name="getDelta" doc:id="bbbeb998-3664-4fbd-84d3-278c9787f5a3" >
 		<http:listener doc:name="Listener" doc:id="c1c1ccd8-8e91-4e6e-aff8-98aa876b6903" config-ref="mua-flights-api-httpListenerConfig" path="/delta" allowedMethods="GET"/>
 		<choice doc:name="filtering destination?" doc:id="7a1eea0e-186f-4b37-b38b-1860dfc08eb3" >
-			<when expression="#[attributes.queryParams.code == null]">
+			<when expression='#[attributes.queryParams["code"] == null]'>
 				<ee:transform doc:name="create SOAP envelope" doc:id="887615d5-3baf-450b-95c0-23cca5442924">
 					<ee:message>
 						<ee:set-payload><![CDATA[%dw 2.0
@@ -134,10 +134,10 @@ ns ns0 http://soap.training.mulesoft.com/
 				<ee:transform doc:name="to Flight[] POJO (JSON)" doc:id="68a55470-5184-45e4-819f-75621530a673">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
+output application/java
 ns ns0 http://soap.training.mulesoft.com/
 ---
-payload.body.ns0#findFlightResponse.*return map ( return , indexOfReturn ) -> {
+payload.ns0#findFlightResponse.*return map ( return , indexOfReturn ) -> {
 	airlineName: return.airlineName,
 	availableSeats: return.emptySeats,
 	departureDate: return.departureDate,
