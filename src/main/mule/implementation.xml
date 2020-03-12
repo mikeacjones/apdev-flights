@@ -12,19 +12,40 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 	<flow name="getAllAirlines" doc:id="20d7df1c-1762-4636-81f9-97bcf34a24ab" >
 		<scatter-gather doc:name="Scatter-Gather" doc:id="1fe5893e-875a-420e-90ab-fb080f7a6e60">
 			<route>
-				<flow-ref doc:name="getAmerican" doc:id="de61ce43-0023-456b-8a54-0af67bfaa9da" name="getAmerican" />
+				<try doc:name="getAmerican" doc:id="3749bdd3-7952-4c19-a665-6f2aaff55fae" >
+					<flow-ref doc:name="getAmerican" doc:id="de61ce43-0023-456b-8a54-0af67bfaa9da" name="getAmerican" />
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="954a5ef4-2193-4791-a149-d91ca02a3544" type="ANY">
+							<set-payload value="#[[]]" doc:name="Set Payload" doc:id="48f013d3-adb1-4d79-b23e-a073175d8a54" />
+						</on-error-continue>
+					</error-handler>
+				</try>
 			</route>
 			<route>
-				<flow-ref doc:name="getUnited" doc:id="a548a4a9-f8e2-412c-9e34-9a6b02219259" name="getUnited" />
+				<try doc:name="getUnited" doc:id="301668a3-573d-4118-a11d-d07d0d8b520d" >
+					<flow-ref doc:name="getUnited" doc:id="a548a4a9-f8e2-412c-9e34-9a6b02219259" name="getUnited" />
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="732cdb52-0efe-4cc3-9575-5ae0b54b966e" type="ANY">
+							<set-payload value="#[[]]" doc:name="Set Payload" doc:id="e0d7b7e0-4d62-4c27-bae0-5362a583fb15" />
+						</on-error-continue>
+					</error-handler>
+				</try>
 			</route>
 			<route>
-				<flow-ref doc:name="getDelta" doc:id="54e2cb3f-cf1c-4a05-89d8-1b8701450583" name="getDelta" />
+				<try doc:name="getDelta" doc:id="1b8988f1-aae5-4ac8-9a52-90f068e6cfda" >
+					<flow-ref doc:name="getDelta" doc:id="54e2cb3f-cf1c-4a05-89d8-1b8701450583" name="getDelta" />
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="7e04a35a-f367-4d93-a062-07666b335a44" type="ANY">
+							<set-payload value="#[[]]" doc:name="Set Payload" doc:id="9c79001c-3e9d-4c31-ab73-c7bfee8839de" />
+						</on-error-continue>
+					</error-handler>
+				</try>
 			</route>
 		</scatter-gather>
 		<ee:transform doc:name="flatten to Flight[] POJO (JSON)" doc:id="b078a6e3-6170-4c8e-a407-36e8c0ec846b">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
+output application/java
 ---
 flatten(payload..payload)]]></ee:set-payload>
 			</ee:message>
@@ -34,14 +55,24 @@ flatten(payload..payload)]]></ee:set-payload>
 		<http:listener doc:name="GET /flights" doc:id="7ab2170a-21ae-4f73-9906-349fe9be3693" config-ref="mua-flights-api-httpListenerConfig" path="/flights" allowedMethods="GET" >
 			<http:response statusCode="#[vars.httpStatus default 200]" />
 			<http:error-response statusCode="#[vars.httpStatus default 500]" >
+				<http:body ><![CDATA[#[payload]]]></http:body>
 			</http:error-response>
 		</http:listener>
 		<set-variable value="#[trim(lower(attributes.queryParams.airline))]" doc:name="airline" doc:id="c2d52078-4c64-414e-837c-26a17da7f377" variableName="airline"/>
 		<flow-ref doc:name="setCode" doc:id="1e4f5ab2-7e43-4685-a365-c08dccb0642d" name="setCode"/>
-		<validation:is-true doc:name="Is true" doc:id="ea95051c-5479-4bbc-adfc-1ddc01eb36fc" expression="#[['SFO','LAX','CLE','PDX','PDF'] contains vars.code]" message="#['Invalid destination' ++ ' ' ++ (vars.code default ' ')]"/>
+		<validation:is-true doc:name="Is true" doc:id="ea95051c-5479-4bbc-adfc-1ddc01eb36fc" expression="#[['SFO','LAX','CLE','PDX','PDF'] contains vars.code]" message="#['Invalid destination' ++ ' ' ++ (vars.code default ' ')]">
+			<error-mapping targetType="APP:INVALID_DESTINATION" sourceType="VALIDATION:INVALID_BOOLEAN"/>
+		</validation:is-true>
 		<choice doc:name="Choice" doc:id="9bbd2542-d49e-48a1-b233-d55057c03d40" >
 			<when expression='#[vars.airline == "american"]'>
-				<flow-ref doc:name="getAmerican" doc:id="15455b23-38e7-4eef-8c3e-b236aa6feedf" name="getAmerican"/>
+				<try doc:name="getAmerican" doc:id="dbe82afe-1079-4589-8b65-5245fd6a7a97" >
+					<flow-ref doc:name="getAmerican" doc:id="15455b23-38e7-4eef-8c3e-b236aa6feedf" name="getAmerican" />
+					<error-handler >
+						<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1955e573-d3cb-49d2-ab4c-d201535c68e9" type="AMERICAN-FLIGHTS-API:BAD_REQUEST">
+							<raise-error doc:name="APP:INVALID_DESTINATION" doc:id="66400223-6d9c-4a6b-9255-f4b0d4dd5e07" type="APP:INVALID_DESTINATION"/>
+						</on-error-propagate>
+					</error-handler>
+				</try>
 			</when>
 			<when expression='#[vars.airline == "united"]'>
 				<flow-ref doc:name="getUnited" doc:id="6dac0b80-8c10-4210-82a8-01aa3d182df1" name="getUnited"/>
@@ -53,15 +84,10 @@ flatten(payload..payload)]]></ee:set-payload>
 				<flow-ref doc:name="getAllAirlines" doc:id="04191d73-cbde-4ed3-bc7c-2ff461a54269" name="getAllAirlines"/>
 			</when>
 			<otherwise >
-				<set-payload value='#[output application/json
----
-{
-	"message": "Invalid airline specified"
-}]' doc:name='{ "message": "Invalid airline specific" }' doc:id="70adf90e-4844-4658-b9df-82f8a4f567c0" />
-				<set-variable value="400" doc:name="set 400: BAD_REQUEST" doc:id="9ca4de16-b17f-4eeb-9a87-7681ade6af1e" variableName="httpStatus"/>
+				<raise-error doc:name="APP:INVALID_AIRLINE" doc:id="9b1b786b-a64e-449f-887f-f6b66545a5cd" type="APP:INVALID_AIRLINE"/>
 			</otherwise>
 		</choice>
-		<ee:transform doc:name="enforce JSON" doc:id="b602ef4b-57da-4e9e-af19-4665b76e4585" >
+		<ee:transform doc:name="convert to JSON" doc:id="b602ef4b-57da-4e9e-af19-4665b76e4585" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -69,5 +95,37 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On error propogate" doc:id="5f297ed7-4c41-4c60-9e44-b311797ce0a6" type="APP:INVALID_DESTINATION">
+				<ee:transform doc:name="Transform Message" doc:id="c73081db-704b-4ee9-a12e-eaba1c86e078" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Invalid destination specified: " ++ (vars.code default "")
+}]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1c9beff1-c228-455e-9951-cae51b6a469e" type="APP:INVALID_AIRLINE">
+				<ee:transform doc:name="Transform Message" doc:id="f79af40e-0f45-4372-8c35-e6fe3fcd32da" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Invalid airline specified: " ++ (vars.airline default "")
+}]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>

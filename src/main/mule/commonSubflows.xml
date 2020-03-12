@@ -5,6 +5,6 @@
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	
 	<sub-flow name="setCode" doc:id="35ee9115-ec3a-4caf-a621-6d5421be7c9e" >
-		<set-variable value="#[upper(message.attributes.queryParams.code default 'SFO')]" doc:name="code" doc:id="3a4ebb96-9573-47ed-8b13-718f29a9ae02" variableName="code" />
+		<set-variable value="#[upper((message.attributes.queryParams.code default 'SFO') as String)]" doc:name="code" doc:id="3a4ebb96-9573-47ed-8b13-718f29a9ae02" variableName="code" />
 	</sub-flow>
 </mule>

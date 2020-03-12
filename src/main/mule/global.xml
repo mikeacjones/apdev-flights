@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
-	xmlns:american-flights-api="http://www.mulesoft.org/schema/mule/american-flights-api"
-	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:american-flights-api="http://www.mulesoft.org/schema/mule/american-flights-api" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/american-flights-api http://www.mulesoft.org/schema/mule/american-flights-api/current/mule-american-flights-api.xsd
-http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <http:listener-config name="mua-flights-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
@@ -25,8 +26,9 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 	</http:request-config>
 	<configuration doc:name="Configuration" doc:id="839aba76-69c3-4266-a02b-57428fcd2f08" defaultErrorHandler-ref="globalError_Handler" />
 	<error-handler name="globalError_Handler" doc:id="63312590-403d-449d-8a64-74707d40171a" >
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7a69c417-d8a2-4605-a14f-603d4efebfd7" type="ANY">
-			<logger level="INFO" doc:name="DEFAULT HANDLER EXECUTED" doc:id="d96950de-5418-4f97-ade7-afbc7b00d016" message="DEFAULT HANDLER EXECUTED"/>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="554c0701-0683-4048-940f-7e1df24e2eb3" type="ANY">
+			<logger level="INFO" doc:name="DEFAULT HANDLER EXECUTED - UNHANDLED EXECEPTION" doc:id="3f3e789e-5e19-42cb-b5eb-3ddb44d77d7e" message="DEFAULT HANDLER EXECUTED - UNHANDLED EXECEPTION"/>
+			<set-variable value="500" doc:name="set httpStatus to 500" doc:id="760349a9-264a-4bbb-a4b3-67f964a9de2d" variableName="httpStatus"/>
 		</on-error-propagate>
 	</error-handler>	
 </mule>

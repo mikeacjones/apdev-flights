@@ -44,24 +44,6 @@ type united_flights_json = {|
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
-  <types:enrichment select="#68a55470-5184-45e4-819f-75621530a673">
-    <types:processor-declaration>
-      <types:output-event>
-        <types:message>
-          <types:payload type="flight_pojo[]"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
-  <types:enrichment select="#ea123976-95aa-4120-beb0-444dae2c6028">
-    <types:processor-declaration>
-      <types:output-event>
-        <types:message>
-          <types:payload type="flight_pojo[]"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
   <types:enrichment select="#b078a6e3-6170-4c8e-a407-36e8c0ec846b">
     <types:processor-declaration>
       <types:output-event>
@@ -80,11 +62,20 @@ type united_flights_json = {|
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
-  <types:enrichment select="#66935bc7-0bd9-4a69-bc18-25e8626adb7e">
+  <types:enrichment select="#c45ce548-f335-4fd0-a6ea-91ff91a9bff5">
     <types:processor-declaration>
       <types:output-event>
         <types:message>
-          <types:payload type="find_flight_response"/>
+          <types:payload type="flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#ea123976-95aa-4120-beb0-444dae2c6028">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flight_pojo[]"/>
         </types:message>
       </types:output-event>
     </types:processor-declaration>
