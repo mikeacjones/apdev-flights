@@ -24,7 +24,21 @@ type united_flights_json = {|
       <types:shape format="java" element="com.mulesoft.training.Flight"/>
     </types:type>
   </types:catalog>
-  <types:enrichment select="#de02ce79-685c-4f15-b928-5cfc4163e533">
+  <types:enrichment select="#6f389ef3-a35a-4082-bff5-d8bd520ca13b">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="united_flights_json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#68a55470-5184-45e4-819f-75621530a673">
     <types:processor-declaration>
       <types:output-event>
         <types:message>
@@ -33,13 +47,26 @@ type united_flights_json = {|
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
-  <types:enrichment select="#6f389ef3-a35a-4082-bff5-d8bd520ca13b">
+  <types:enrichment select="#ea123976-95aa-4120-beb0-444dae2c6028">
     <types:processor-declaration>
-      <types:input-event>
+      <types:output-event>
         <types:message>
-          <types:payload type="united_flights_json"/>
+          <types:payload type="flight_pojo[]"/>
         </types:message>
-      </types:input-event>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b078a6e3-6170-4c8e-a407-36e8c0ec846b">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#de02ce79-685c-4f15-b928-5cfc4163e533">
+    <types:processor-declaration>
       <types:output-event>
         <types:message>
           <types:payload type="flight_pojo[]"/>
