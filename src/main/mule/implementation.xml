@@ -128,4 +128,26 @@ output application/json
 			</on-error-propagate>
 		</error-handler>
 	</flow>
+	<flow name="postFlight" doc:id="58974bc9-7b85-41bd-909c-b86fe270d617" >
+		<http:listener doc:name="POST /flights" doc:id="aecd26ee-a200-4bff-a9bf-9d807761eb67" config-ref="mua-flights-api-httpListenerConfig" path="/flights" allowedMethods="POST"/>
+		<ee:transform doc:name="Transform Message" doc:id="8171f8f0-3a5f-4b25-be84-33aa8be5865a" >
+			<ee:message >
+				<ee:set-payload resource="postFlightScript.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="implementationFlow" doc:id="02a00c2b-0bd2-485f-8fc5-204b201f6761" >
+		<ee:transform doc:name="Transform Message" doc:id="5e579f69-73f8-47cc-b00f-1a0987608165" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/flatfile schemaPath='test_flat_file.ffd'
+//output application/dw
+---
+payload.flights map (flight, flightIndex) ->
+{
+	airlineName: flight.airlineName
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
 </mule>

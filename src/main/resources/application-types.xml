@@ -29,6 +29,13 @@ type united_flights_json = {|
     <types:type name="find_flight_response" format="xml">
       <types:example format="xml" element="{http://soap.training.mulesoft.com/}findFlightResponse" location="examples/findFlightResponseExample.xml"/>
     </types:type>
+    <types:type name="test_flat_file" format="fixedWidth">
+      <types:shape format="fixedWidth" element="test_flat_file" location="test_flat_file.ffd"/>
+    </types:type>
+    <types:type name="test_flatfile" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#6f389ef3-a35a-4082-bff5-d8bd520ca13b">
     <types:processor-declaration>
@@ -78,6 +85,24 @@ type united_flights_json = {|
           <types:payload type="flight_pojo[]"/>
         </types:message>
       </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8171f8f0-3a5f-4b25-be84-33aa8be5865a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="delta_flights_xml"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5e579f69-73f8-47cc-b00f-1a0987608165">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="united_flights_json"/>
+        </types:message>
+      </types:input-event>
     </types:processor-declaration>
   </types:enrichment>
 </types:mule>
